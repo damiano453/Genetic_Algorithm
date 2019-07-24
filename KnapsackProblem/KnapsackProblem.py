@@ -183,9 +183,7 @@ def percentOfFit(fit):
 
 'Generate Population and save to File' 
 'Used only for test'
-def generateData(numberOfItems,numberOfInduviduals,probabilityOfChromosome):
-	numberOfItems = 64
-	numberOfInduviduals = 512
+def generateData(numberOfItems,numberOfInduviduals,probabilityOfChromosome,title):
 	probabilityOfChromosome  = 1/(numberOfItems-10)
 	
 	'Generate input data'
@@ -198,19 +196,15 @@ def generateData(numberOfItems,numberOfInduviduals,probabilityOfChromosome):
 	pop = population(numberOfInduviduals,numberOfItems,probabilityOfChromosome,maxWeight,prizes,weights)
 	print("Parent Population:\n",pop,'\n\n')
 	
-	'Name of Generated File'
-	title = "Dane_Item:"+str(numberOfItems)+"_Individ:"+str(numberOfInduviduals)
+
+	print(title)
 	
 	np.savez(title, weights=weights, prizes=prizes, maxWeight=maxWeight, pop=pop)
 	return 0
 
 'Load Population from File'
 'Used only for test'
-def loadData(numberOfItems,numberOfInduviduals):
-	numberOfItems = 64
-	numberOfInduviduals = 256
-	
-	title = "Dane_Item:"+str(numberOfItems)+"_Individ:"+str(numberOfInduviduals)
+def loadData(numberOfItems,numberOfInduviduals,title):
 	data = np.load(title+'.npz')
 	#weights=weights, prizes=prizes, maxWeight=maxWeight, pop=pop)
 	
@@ -231,7 +225,7 @@ def main():
 	'Parameters of Population'
 	numberOfItems = 64									#number should be even (for crossing method)
 	numberOfInduviduals = 512							#number should be even (for crossing method)
-	newData = 0											#if you want new data
+	newData = 1											#if you want new data
 	probabilityOfChromosome  = 1/(numberOfItems-10) 	#Probablity of 1 = "take item" in chromosome 
 	
 	'Parameters of Algorithm'
@@ -242,15 +236,18 @@ def main():
 	minValOfIterations = 8								#case for stop algorithm
 	maxIterations = 100									#Max iterations of algorithm
 	
+        
+	title = "Dane_Item_"+str(numberOfItems)+"__Individ_"+str(numberOfInduviduals) #Name of Generated File -> used to test parameters on one generetad dataset
+
 	print ('Probability of Chromosome: ',probabilityOfChromosome)	#Just for info
 	
 	
 	if (newData == 1):
 		'Generates new data'
-		generateData(numberOfItems,numberOfInduviduals,probabilityOfChromosome)
+		generateData(numberOfItems,numberOfInduviduals,probabilityOfChromosome,title)
 	
 	'load generated data'
-	weights,prizes,maxWeight,pop = loadData(numberOfItems,numberOfInduviduals)
+	weights,prizes,maxWeight,pop = loadData(numberOfItems,numberOfInduviduals,title)
 	#print(weights,prizes,maxWeight,pop)
 	'''
 	'Genetic Algorithm'
